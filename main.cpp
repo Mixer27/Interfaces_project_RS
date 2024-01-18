@@ -242,11 +242,11 @@ int main()
 
         string inputFilePath;
         string outputFilePath;
-        std::cout << "Enter path to file that will be transfered: ";
+        std::cout << "Enter path to file that will be transferred: ";
         std::cin >> inputFilePath;
         std::cout << "\n";
 
-        std::cout << "Enter path to where file will be transfered: ";
+        std::cout << "Enter path where file will be transferred to: ";
         std::cin >> outputFilePath;
         std::cout << "\n";
 
