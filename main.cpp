@@ -174,12 +174,12 @@ bool sendFileOverSerialPort(const string inputFilePath, const string outputFileP
     long int totalBytesWritten = 0;
 
     inputFile.open(inputFilePath, ifstream::in | ifstream::binary);
-    outputFile.open(outputFilePath, ofstream::out | ofstream::binary);
     if (!inputFile.good())
     {
         std::cerr << "File " << inputFilePath << " does not exist!\n";
         return false;
     }
+    outputFile.open(outputFilePath, ofstream::out | ofstream::binary);
 
     inputFile.seekg(0, inputFile.end);
     long int fileSize = inputFile.tellg();
