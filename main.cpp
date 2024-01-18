@@ -54,7 +54,7 @@ void printDcb( HANDLE hCommDev, DCB dcb) {
     }
 }
 
-void openPort() {
+bool openPort() {
     // checking if port is closed
     if (CloseHandle(hCommDev)) {
         cout << "Closing open port " << portName;
@@ -69,7 +69,7 @@ void openPort() {
         NULL);
     cout << "Initial configuration:" << endl;
     printDcb(hCommDev, dcb);
-
+    return hCommDev != INVALID_HANDLE_VALUE;
 }
 
 void modifyPortDcb(unsigned long BaudRate, int ByteSize, unsigned long fParity, int Parity, int StopBits) {
@@ -201,14 +201,22 @@ bool sendFileOverSerialPort(const string inputFilePath, const string outputFileP
 
 int main()
 {
-
-    openPort();
+    int portNum;
+    char* fullName = new char[5];
+    std::cout << "Enter port number COM_\nex. input = 3 => opens COM3\n";
+    std::cin >> portNum;
+    sprintf(fullName, "COM%d", portNum);
+    std::cout << fullName << "\n";
+    portName = (LPCTSTR)fullName;
+    if (openPort()) {
     cout << "\nFinal configuration:" << endl;
     modifyPortDcb(CBR_256000, 8, true, ODDPARITY, ONESTOPBIT);
     setTimeouts(0, 5000, 0, 0, 0);
 
     sendFileOverSerialPort("jerzyk.jpeg", "out.jpeg");
-//    sendFileOverSerialPort("in.txt", "out.txt");
+    } else {
+        std::cerr << "Cannot open Port to transmission: " << fullName << ".\nCheck connection or try other port.\n";
+    } 
 
 
     closePort();
